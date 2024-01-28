@@ -6,7 +6,7 @@
 #    By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/11/25 14:15:08 by aherbin           #+#    #+#              #
-#    Updated: 2024/01/26 17:25:27 by aherbin          ###   ########.fr        #
+#    Updated: 2024/01/28 18:31:11 by aherbin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,10 +28,11 @@ RM = rm -f
 
 MKDIR_P = mkdir -p
 
-CYAN = \033[1;36m
-GREEN = \033[1;32m
-RED = \033[1;31m
+CYAN = \033[0;1;36m
+GREEN = \033[0;1;32m
+RED = \033[0;1;31m
 BLUE = \033[0;34m
+ECEND = \033[0m
 
 #          LIBFT          #
 
@@ -98,7 +99,7 @@ $(NAME): directories $(OBJS)
 
 $(OBJS_DIR)%.o: $(SRC_DIR)%.c
 	@$(CC) $(INCLUDES) $(CCFLAGS) -o $@ -c $<
-	@echo "$(GREEN)$@ $(BLUE)successfully compiled"
+	@echo "$(GREEN)$@ $(BLUE)successfully compiled$(ECEND)"
 
 $(OBJS_DIR):
 	@$(MKDIR_P) $(OBJS_DIR)
@@ -109,14 +110,14 @@ $(OBJS_DIR):
 
 printf: $(NAME) $(PRINTF_OBJS)
 	@$(ARNAME) $(PRINTF_OBJS)
-	@echo "$(CYAN) Printf $(BLUE) added to $(CYAN) $(NAME)"
+	@echo "$(CYAN) Printf $(BLUE) added to $(CYAN) $(NAME)$(ECEND)"
 
 $(PRINTF_OBJS_DIR): $(OBJS_DIR)
 	@$(MKDIR_P) $(PRINTF_OBJS_DIR)
 
 $(PRINTF_OBJS_DIR)%.o: $(PRINTF_SRC_DIR)%.c
 	@$(CC) $(INCLUDES) $(CCFLAGS) -o $@ -c $<
-	@echo "$(GREEN)$@ $(BLUE)successfully compiled"
+	@echo "$(GREEN)$@ $(BLUE)successfully compiled$(ECEND)"
 
 # **************************************************************************** #
 #                                  GNL RULES                                   #
@@ -124,14 +125,14 @@ $(PRINTF_OBJS_DIR)%.o: $(PRINTF_SRC_DIR)%.c
 
 gnl: $(NAME) $(GNL_OBJS)
 	@$(ARNAME) $(GNL_OBJS)
-	@echo "$(CYAN) Get_Next_Line $(BLUE) added to $(CYAN) $(NAME)"
+	@echo "$(CYAN) Get_Next_Line $(BLUE) added to $(CYAN) $(NAME)$(ECEND)"
 
 $(GNL_OBJS_DIR): $(OBJS_DIR)
 	@$(MKDIR_P) $(GNL_OBJS_DIR)
 
 $(GNL_OBJS_DIR)%.o: $(GNL_SRC_DIR)%.c
 	@$(CC) $(INCLUDES) $(CCFLAGS) -o $@ -c $<
-	@echo "$(GREEN)$@ $(BLUE)successfully compiled"
+	@echo "$(GREEN)$@ $(BLUE)successfully compiled$(ECEND)"
 
 # **************************************************************************** #
 #                                    RULES                                     #
@@ -142,11 +143,11 @@ directories: $(OBJS_DIR) $(GNL_OBJS_DIR) $(PRINTF_OBJS_DIR)
 clean:
 	@$(RM) $(OBJS) $(OBJS_PRINTF) $(OBJS_GNL)
 	@rm -rf $(OBJS_DIR)
-	@echo "$(RED)OBJS $(BLUE)successfully deleted"
+	@echo "$(RED)OBJS $(BLUE)successfully deleted$(ECEND)"
 
 fclean: clean
 	@$(RM) $(NAME)
-	@echo "$(RED)$(NAME) $(BLUE)successfully deleted"
+	@echo "$(RED)$(NAME) $(BLUE)successfully deleted$(ECEND)"
 
 re: fclean all
 

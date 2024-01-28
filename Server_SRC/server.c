@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:36:14 by aherbin           #+#    #+#             */
-/*   Updated: 2024/01/28 15:15:10 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/01/28 18:07:04 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,10 +28,10 @@ by: aherbin\n\n\033[0m", pid);
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\033[0m");
 }
 
-static void	listen(void)
+/*static void	listen(void)
 {
 }
-
+*/
 int	main(void)
 {
 	ft_print_header((int) getpid());
