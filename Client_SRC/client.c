@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:35:25 by aherbin           #+#    #+#             */
-/*   Updated: 2024/01/28 18:43:27 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/01/28 19:51:01 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 int	main(int argc, char **argv)
 {
 	//__pid_t	srv_pid;
-	ft_printf("heyy %i %s\n", argc, argv[argc-1]);
+	kill(ft_atoi(argv[argc - 1]), SIGUSR1);
 //	PID =  argv[1]
 //	str_to_send = argv[2]
 //	if (argc != 3)
