@@ -6,7 +6,7 @@
 #    By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/28 17:48:20 by aherbin           #+#    #+#              #
-#    Updated: 2024/01/28 18:56:46 by aherbin          ###   ########.fr        #
+#    Updated: 2024/01/28 18:57:43 by aherbin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -67,7 +67,7 @@ clean:
 	@echo "$(RED)OBJS $(BLUE)successfully deleted$(ECEND)"
 
 fclean: clean
-	@$(RM) $(NAME)
+	@$(RM) $(CLIENT) $(SERVER)
 	@$(RM) libft.a
 	@make fclean -C $(LIBFT)
 	@echo "$(RED)$(NAME) & libft/libft.a $(BLUE)successfully deleted$(ECEND)"
