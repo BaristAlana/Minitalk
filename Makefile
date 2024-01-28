@@ -6,7 +6,7 @@
 #    By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/28 17:48:20 by aherbin           #+#    #+#              #
-#    Updated: 2024/01/28 18:29:19 by aherbin          ###   ########.fr        #
+#    Updated: 2024/01/28 18:56:46 by aherbin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@
 #                                 variables                                    #
 # **************************************************************************** #
 
-NAME = server client
+NAME = Minitalk
 
 CC = cc
 
@@ -32,9 +32,15 @@ ECEND = \033[0m
 
 LIBFT = libft
 
+LIBFT_A = libft.a
+
 SRC_SRV = Server_SRC/server.c
 
 SRC_CLIENT = Client_SRC/client.c
+
+CLIENT = client
+
+SERVER = server
 
 # **************************************************************************** #
 #                                    RULES                                     #
@@ -42,12 +48,19 @@ SRC_CLIENT = Client_SRC/client.c
 
 all: $(NAME)
 
-$(NAME):
+$(NAME): $(CLIENT) $(SERVER)
+
+$(LIBFT_A):
 	@make printf -C $(LIBFT)
 	@cp libft/libft.a .
-	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_SRV) libft.a -o server
-	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_CLIENT) libft.a -o client
-	@echo "$(CYAN)$(NAME) $(BLUE)successfully created!$(ECEND)"
+
+$(CLIENT): $(LIBFT_A) $(SRC_CLIENT)
+	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_CLIENT) $(LIBFT_A) -o client
+	@echo "$(CYAN)$(CLIENT) $(BLUE)successfully created!$(ECEND)"
+
+$(SERVER): $(LIBFT_A) $(SRC_SRV)
+	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_SRV) $(LIBFT_A) -o server
+	@echo "$(CYAN)$(SERVER) $(BLUE)successfully created!$(ECEND)"
 
 clean:
 	@make clean -C $(LIBFT)
