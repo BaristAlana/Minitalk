@@ -6,7 +6,7 @@
 #    By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/28 17:48:20 by aherbin           #+#    #+#              #
-#    Updated: 2024/01/28 18:57:43 by aherbin          ###   ########.fr        #
+#    Updated: 2024/01/29 18:05:51 by aherbin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,7 +46,12 @@ SERVER = server
 #                                    RULES                                     #
 # **************************************************************************** #
 
-all: $(NAME)
+all: $(NAME) $(SUBDIRS)
+
+SUBDIRS = libft/src
+
+$(SUBDIRS):
+	$(MAKE) -C $@
 
 $(NAME): $(CLIENT) $(SERVER)
 

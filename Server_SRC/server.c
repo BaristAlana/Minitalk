@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:36:14 by aherbin           #+#    #+#             */
-/*   Updated: 2024/01/28 20:25:08 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/01/29 17:41:50 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,16 +33,16 @@ by: aherbin\n\n\033[0m", pid);
 }
 */
 
-void	*signal_handler(int signum)
-{
-	ft_printf("received signum %i\n", signum);
-}
+//void	*signal_handler(int signum)
+//{
+//	ft_printf("received signum %i\n", signum);
+//}
 
 int	main(void)
 {
 	ft_print_header((int) getpid());
 	pause();
-	sigaction(SIGUSR1, &signal_handler, NULL);
+	//sigaction(SIGUSR1, &signal_handler, NULL);
 	//ft_printf("Process Id = %i\n", pid);
 	//while (1)
 	//	listen();
