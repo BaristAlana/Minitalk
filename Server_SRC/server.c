@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:36:14 by aherbin           #+#    #+#             */
-/*   Updated: 2024/01/29 20:29:30 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/01/30 16:26:20 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ by: aherbin\n\n\033[0m", pid);
 }
 */
 
+
+
 void	sig_handler(int signum)
 {
 	ft_printf("received signum %i\n", signum);
@@ -43,7 +45,9 @@ int	main(void)
 {
 	ft_print_header((int) getpid());
 	signal(SIGUSR1, sig_handler);
-	pause();
+	while (1)
+		sleep(1);
+	return (0);
 	//while (1)
 	//	sleep(1);
 	//sigaction(SIGUSR1, &signal_handler, NULL);
