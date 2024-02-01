@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:36:14 by aherbin           #+#    #+#             */
-/*   Updated: 2024/01/31 16:19:48 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/01 02:59:20 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,14 +37,13 @@ void	sig_printf(int signum)
 {
 	if (signum == 12)
 	{
-		bit = bit & 0b10000000;
 		bit >>= 1;
 		write(STDOUT_FILENO, "0", 2);
 		++i;
 	}
 	if (signum == 10)
 	{
-		bit = bit & 0b11111111;
+		bit |= 1;
 		bit >>= 1;
 		write(STDOUT_FILENO, "1", 2);
 		++i;
@@ -55,8 +54,6 @@ void	loop_handler(void)
 {
 
 	bit = 0b10000000;
-	char	str[5] = "00000";
-	char	*ptr = str;
 
 	signal(SIGUSR1, &sig_printf);
 	signal(SIGUSR2, &sig_printf);
@@ -65,11 +62,9 @@ void	loop_handler(void)
 		pause();
 		if (i == 8)
 		{
-			*ptr = bit;
 			i = 0;
-			ft_printf("\n%s\n", ptr);
+			ft_printf("\n%c\n", bit);
 			bit = 0b10000000;
-			ptr++;
 		}
 		if (bit == 126)
 			exit(0);
