@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:36:14 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/01 02:59:20 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/01 12:18:27 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,11 @@ void	sig_printf(int signum)
 	}
 	if (signum == 10)
 	{
-		bit |= 1;
-		bit >>= 1;
+		if (i >= 1)
+		{
+			bit >>= i;
+			bit |= 0b10000000;
+		}
 		write(STDOUT_FILENO, "1", 2);
 		++i;
 	}
