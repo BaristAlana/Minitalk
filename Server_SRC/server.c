@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:36:14 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/01 14:39:11 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/01 22:59:06 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,13 @@ void	sig_printf(int signum)
 	c = 0b10000000;
 	if (signum == 12)
 	{
-		//write(STDOUT_FILENO, "0", 2);
+		write(STDOUT_FILENO, "0", 2);
 		++i;
 	}
 	if (signum == 10)
 	{
 		bit |= c >> i;
-		//write(STDOUT_FILENO, "1", 2);
+		write(STDOUT_FILENO, "1", 2);
 		++i;
 	}
 }
@@ -67,9 +67,9 @@ void	loop_handler(void)
 			if (bit == 0)
 			{
 				write(1, "\n", 1);
-				exit(0);
+				//exit(0);
 			}
-			ft_printf("%c", bit);
+			ft_printf(" : %c\n", bit);
 			i = 0;
 			bit = 0;
 		}
@@ -82,7 +82,3 @@ int	main(void)
 	loop_handler();
 	return (0);
 }
-
-
-// TODO: look for a "start of text" (STX, 02 in ascii) char before printing the string
-// if last char received
