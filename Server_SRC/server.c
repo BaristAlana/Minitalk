@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:36:14 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/01 12:18:27 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:39:11 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,20 +35,18 @@ int				i;
 
 void	sig_printf(int signum)
 {
+	unsigned char	c;
+
+	c = 0b10000000;
 	if (signum == 12)
 	{
-		bit >>= 1;
-		write(STDOUT_FILENO, "0", 2);
+		//write(STDOUT_FILENO, "0", 2);
 		++i;
 	}
 	if (signum == 10)
 	{
-		if (i >= 1)
-		{
-			bit >>= i;
-			bit |= 0b10000000;
-		}
-		write(STDOUT_FILENO, "1", 2);
+		bit |= c >> i;
+		//write(STDOUT_FILENO, "1", 2);
 		++i;
 	}
 }
@@ -56,7 +54,8 @@ void	sig_printf(int signum)
 void	loop_handler(void)
 {
 
-	bit = 0b10000000;
+	bit = 0;
+	i = 0;
 
 	signal(SIGUSR1, &sig_printf);
 	signal(SIGUSR2, &sig_printf);
@@ -65,18 +64,20 @@ void	loop_handler(void)
 		pause();
 		if (i == 8)
 		{
+			if (bit == 0)
+			{
+				write(1, "\n", 1);
+				exit(0);
+			}
+			ft_printf("%c", bit);
 			i = 0;
-			ft_printf("\n%c\n", bit);
-			bit = 0b10000000;
+			bit = 0;
 		}
-		if (bit == 126)
-			exit(0);
 	}
 }
 
 int	main(void)
 {
-	i = 0;
 	ft_print_header((int) getpid());
 	loop_handler();
 	return (0);

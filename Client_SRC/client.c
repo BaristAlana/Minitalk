@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:35:25 by aherbin           #+#    #+#             */
-/*   Updated: 2024/01/31 16:18:59 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/01 14:37:43 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,7 @@ int str_to_c(__pid_t pid, char *str)
 			return (0);
 		++i;
 	}
+	send_char_to_server(0, pid);
 	return (1);
 }
 
@@ -72,7 +73,7 @@ int	main(int argc, char **argv)
 {
 	__pid_t	pid;
 
-	if (argc != 3 || !is_pid(argv[1]))
+	if (argc != 3 || !is_pid(argv[1]) || !argv[2])
 		return (0);
 	pid = (__pid_t)ft_atoi(argv[1]);
 	if (!str_to_c(pid, argv[2]))
