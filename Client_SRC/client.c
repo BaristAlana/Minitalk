@@ -6,20 +6,15 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:35:25 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/01 14:37:43 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/12 12:09:54 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
 
-//static int	ft_send(__pid_t srv_pid, char *str)
-//{
-
-//}
-
-int send_char_to_server(unsigned char c, __pid_t server_pid)
+int	send_char_to_server(unsigned char c, __pid_t server_pid)
 {
-	unsigned char   bit;
+	unsigned char	bit;
 
 	bit = 0b10000000;
 	while (bit)
@@ -40,14 +35,14 @@ int send_char_to_server(unsigned char c, __pid_t server_pid)
 	return (1);
 }
 
-int str_to_c(__pid_t pid, char *str)
+int	str_to_c(__pid_t pid, char *str)
 {
 	int	i;
 
 	i = 0;
 	while (str[i])
 	{
-		if (send_char_to_server(str[i], pid) == 0 )
+		if (send_char_to_server(str[i], pid) == 0)
 			return (0);
 		++i;
 	}
@@ -79,11 +74,4 @@ int	main(int argc, char **argv)
 	if (!str_to_c(pid, argv[2]))
 		return (0);
 	return (ft_printf("message sent!\n"));
-
-
-//	PID =  argv[1]
-//	str_to_send = argv[2]
-//	if (argc != 3)
-//		return (-1);
-//	srv_pid = ft_atoi(argv[1]);
 }

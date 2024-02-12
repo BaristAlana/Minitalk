@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:36:14 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/12 12:07:56 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/12 11:45:57 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,11 +30,14 @@ by: aherbin\n\n\033[0m", pid);
 ════════════════════════════════════════════════════════════\n\n\n\033[0m");
 }
 
+unsigned char	bit;
+int				i;
+
 void	sig_printf(int signum)
 {
-	static int	i;
-	static char	bit;
+	unsigned char	c;
 
+	c = 0b10000000;
 	if (signum == 12)
 	{
 		//write(STDOUT_FILENO, "0", 2);
@@ -42,24 +45,35 @@ void	sig_printf(int signum)
 	}
 	if (signum == 10)
 	{
-		bit += 1 << (7 - i);
+		bit |= c >> i;
 		//write(STDOUT_FILENO, "1", 2);
 		++i;
-	}
-	if (i == 8)
-	{
-		ft_printf("%c", bit);
-		i = 0;
-		bit = 0;
 	}
 }
 
 void	loop_handler(void)
 {
+
+	bit = 0;
+	i = 0;
+
 	signal(SIGUSR1, &sig_printf);
 	signal(SIGUSR2, &sig_printf);
 	while (1)
+	{
 		pause();
+		if (i == 8)
+		{
+			if (bit == 0)
+			{
+				write(1, "\n", 1);
+				exit(0);
+			}
+			ft_printf("%c", bit);
+			i = 0;
+			bit = 0;
+		}
+	}
 }
 
 int	main(void)
