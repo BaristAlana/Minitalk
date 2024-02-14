@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:36:14 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/12 12:19:49 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/14 16:30:25 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,9 @@ void	sig_printf(int signum)
 	}
 	if (i == 8)
 	{
-		ft_printf("%c", bit);
-		i = 0;
-		bit = 0;
+		write(1, &bit, 1);
+		i ^= i;
+		bit ^= bit;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:35:25 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/12 12:09:54 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/14 16:25:05 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	send_char_to_server(unsigned char c, __pid_t server_pid)
 				return (0);
 		}
 		bit >>= 1;
-		usleep(100);
+		usleep(200);
 	}
 	return (1);
 }
@@ -46,7 +46,7 @@ int	str_to_c(__pid_t pid, char *str)
 			return (0);
 		++i;
 	}
-	send_char_to_server(0, pid);
+	send_char_to_server('\a', pid);
 	return (1);
 }
 
