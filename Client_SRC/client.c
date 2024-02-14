@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:35:25 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/14 16:25:05 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/14 17:47:53 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	send_char_to_server(unsigned char c, __pid_t server_pid)
 				return (0);
 		}
 		bit >>= 1;
-		usleep(200);
+		usleep(50); // replace by sig_aknowledgement from server
 	}
 	return (1);
 }
@@ -64,6 +64,24 @@ int	is_pid(char *spid)
 	return (1);
 }
 
+void	sig_handler(int signum)
+{
+	if (signum == SIGUSR2)
+		write(1, "Character has been sucessfully receieved!\n", 42);
+}
+
+void	config_signals(void)
+{
+	struct sigaction	sa_newsig;
+
+	sa_newsig.sa_handler = &sig_handler;
+	sa_newsig.sa_flags = SA_SIGINFO;
+	if (sigaction(SIGUSR1, &sa_newsig, NULL) == -1)
+		return ;
+	if (sigaction(SIGUSR2, &sa_newsig, NULL) == -1)
+		return ;
+}
+
 int	main(int argc, char **argv)
 {
 	__pid_t	pid;
@@ -71,6 +89,8 @@ int	main(int argc, char **argv)
 	if (argc != 3 || !is_pid(argv[1]) || !argv[2])
 		return (0);
 	pid = (__pid_t)ft_atoi(argv[1]);
+	config_signals();
+	ft_printf ("Configured!\n\n\n\n");
 	if (!str_to_c(pid, argv[2]))
 		return (0);
 	return (ft_printf("message sent!\n"));
