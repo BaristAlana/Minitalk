@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:35:25 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/15 00:23:04 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/15 00:16:26 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,17 @@ int	send_char_to_server(unsigned char c, __pid_t server_pid)
 		if (bit & c)
 		{
 			if (kill(server_pid, SIGUSR1) == -1)
-				return (0);
+				exit(0);
+			pause();
 		}
 		else
 		{
 			if (kill(server_pid, SIGUSR2) == -1)
-				return (0);
+				exit(0);
+			pause();
 		}
 		bit >>= 1;
-		usleep(100); // replace by sig_aknowledgement from server
+		//usleep(50); // replace by sig_aknowledgement from server
 	}
 	return (1);
 }
@@ -46,7 +48,6 @@ int	str_to_c(__pid_t pid, char *str)
 			return (0);
 		++i;
 	}
-	send_char_to_server('\a', pid);
 	return (1);
 }
 
@@ -64,10 +65,15 @@ int	is_pid(char *spid)
 	return (1);
 }
 
+
 void	sig_handler(int signum)
 {
-	if (signum == SIGUSR2)
-		write(1, "Character has been sucessfully receieved!\n", 42);
+	//if (signum == SIGUSR2)
+		//return ;
+		//write(1, "Character has been sucessfully receieved!\n", 42);
+	//if (signum == SIGUSR1)
+	ft_putnbr_fd(signum, 1);
+		//write(1, "bit\n", 4);
 }
 
 void	config_signals(void)
@@ -77,9 +83,9 @@ void	config_signals(void)
 	sa_newsig.sa_handler = &sig_handler;
 	sa_newsig.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &sa_newsig, NULL) == -1)
-		return ;
+		exit(0);
 	if (sigaction(SIGUSR2, &sa_newsig, NULL) == -1)
-		return ;
+		exit(0);
 }
 
 int	main(int argc, char **argv)
