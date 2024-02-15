@@ -6,7 +6,7 @@
 #    By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/28 17:48:20 by aherbin           #+#    #+#              #
-#    Updated: 2024/02/15 12:04:32 by aherbin          ###   ########.fr        #
+#    Updated: 2024/01/29 18:07:51 by aherbin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,14 +42,6 @@ CLIENT = client
 
 SERVER = server
 
-SRC_SRV_BONUS = Server_SRC_bonus/server_bonus.c
-
-SRC_CLIENT_BONUS = Client_SRC_bonus/client_bonus.c
-
-CLIENT_BONUS = client_bonus
-
-SERVER_BONUS = server_bonus
-
 # **************************************************************************** #
 #                                    RULES                                     #
 # **************************************************************************** #
@@ -70,16 +62,6 @@ $(SERVER): $(LIBFT_A) $(SRC_SRV)
 	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_SRV) $(LIBFT_A) -o server
 	@echo "$(CYAN)$(SERVER) $(BLUE)successfully created!$(ECEND)"
 
-bonus : $(SERVER_BONUS) $(CLIENT_BONUS)
-
-$(CLIENT_BONUS) : $(LIBFT_A) $(SRC_CLIENT_BONUS)
-	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_CLIENT_BONUS) $(LIBFT_A) -o client_bonus
-	@echo "$(CYAN)$(CLIENT_BONUS) $(BLUE)successfully created!$(ECEND)"
-
-$(SERVER_BONUS) : $(LIBFT_A) $(SRC_SRV_BONUS)
-	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_SRV_BONUS) $(LIBFT_A) -o server_bonus
-	@echo "$(CYAN)$(SERVER_BONUS) $(BLUE)successfully created!$(ECEND)"
-
 clean:
 	@make clean -C $(LIBFT)
 	@echo "$(RED)OBJS $(BLUE)successfully deleted$(ECEND)"
@@ -92,4 +74,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all bonus clean fclean re bonus
+.PHONY: all bonus clean fclean re
