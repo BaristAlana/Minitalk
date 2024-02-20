@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   common_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/13 15:11:57 by aherbin           #+#    #+#             */
-/*   Updated: 2024/01/29 18:07:14 by aherbin          ###   ########.fr       */
+/*   Created: 2024/02/16 14:42:01 by aherbin           #+#    #+#             */
+/*   Updated: 2024/02/20 16:28:34 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minitalk_bonus.h"
 
 int	ft_atoi(char *str)
 {
@@ -33,4 +33,57 @@ int	ft_atoi(char *str)
 	while (str[i] >= '0' && str[i] <= '9')
 		nb = nb * 10 + str[i++] - '0';
 	return ((int)nb * sign);
+}
+
+int	ft_isdigit(int c)
+{
+	return (c <= '9' && c >= '0');
+}
+
+void	ft_putnbr_fd(int nb, int fd)
+{
+	char		c;
+
+	if (nb == -2147483647)
+		write(fd, "-2147483647", 11);
+	else if (nb == -2147483648)
+		write(fd, "-2147483648", 11);
+	else
+	{
+		if (nb < 0)
+		{
+			nb *= -1;
+			write(fd, "-", 1);
+		}
+		if (nb > 9)
+			ft_putnbr_fd(nb / 10, fd);
+		c = '0' + nb % 10;
+		write(fd, &c, 1);
+	}
+}
+
+int	is_pid(char *spid)
+{
+	int	i;
+
+	i = 0;
+	while (spid[i])
+	{
+		if (!ft_isdigit(spid[i]))
+			return (0);
+		++i;
+	}
+	return (1);
+}
+
+int	ft_strlen(char *str)
+{
+	int	i;
+
+	i = 0;
+	if (!str)
+		return (0);
+	while (str[i])
+		++i;
+	return (i);
 }

@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/26 17:35:25 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/20 12:27:49 by aherbin          ###   ########.fr       */
+/*   Created: 2024/02/16 14:33:56 by aherbin           #+#    #+#             */
+/*   Updated: 2024/02/20 16:25:27 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client.h"
+#include "minitalk.h"
 
-int	send_char_to_server(unsigned char c, __pid_t server_pid)
+static void	send_char_to_server(unsigned char c, __pid_t server_pid)
 {
 	unsigned char	bit;
 
@@ -22,64 +22,36 @@ int	send_char_to_server(unsigned char c, __pid_t server_pid)
 		if (bit & c)
 		{
 			if (kill(server_pid, SIGUSR1) == -1)
-				return (0);
+				exit (0);
 		}
 		else
 		{
 			if (kill(server_pid, SIGUSR2) == -1)
-				return (0);
+				exit (0);
 		}
+		pause();
 		bit >>= 1;
-		usleep(100); // replace by sig_aknowledgement from server
 	}
-	return (1);
 }
 
-int	str_to_c(__pid_t pid, char *str)
+static void	sig_handler(int signum)
+{
+	if (signum == 12)
+		write(1, "confirmation received!\n", 23);
+}
+
+static int	str_to_c(__pid_t pid, char *str)
 {
 	int	i;
 
 	i = 0;
 	while (str[i])
 	{
-		if (send_char_to_server(str[i], pid) == 0)
-			return (0);
+		send_char_to_server(str[i], pid);
 		++i;
 	}
 	send_char_to_server(0, pid);
 	return (1);
-}
-
-int	is_pid(char *spid)
-{
-	int	i;
-
-	i = 0;
-	while (spid[i])
-	{
-		if (!ft_isdigit(spid[i]))
-			return (0);
-		++i;
-	}
-	return (1);
-}
-
-void	sig_handler(int signum)
-{
-	if (signum == SIGUSR2)
-		write(1, "Character has been sucessfully receieved!\n", 42);
-}
-
-void	config_signals(void)
-{
-	struct sigaction	sa_newsig;
-
-	sa_newsig.sa_handler = &sig_handler;
-	sa_newsig.sa_flags = SA_SIGINFO;
-	if (sigaction(SIGUSR1, &sa_newsig, NULL) == -1)
-		return ;
-	if (sigaction(SIGUSR2, &sa_newsig, NULL) == -1)
-		return ;
 }
 
 int	main(int argc, char **argv)
@@ -89,9 +61,8 @@ int	main(int argc, char **argv)
 	if (argc != 3 || !is_pid(argv[1]) || !argv[2])
 		return (0);
 	pid = (__pid_t)ft_atoi(argv[1]);
-	config_signals();
-	ft_printf ("Configured!\n\n\n\n");
+	signal(10, &sig_handler);
+	signal(12, &sig_handler);
 	if (!str_to_c(pid, argv[2]))
 		return (0);
-	return (ft_printf("message sent!\n"));
 }

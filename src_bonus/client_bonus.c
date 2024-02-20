@@ -1,25 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   client.c                                           :+:      :+:    :+:   */
+/*   client_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/01/26 17:35:25 by aherbin           #+#    #+#             */
-/*   Updated: 2024/01/31 15:39:24 by aherbin          ###   ########.fr       */
+/*   Created: 2024/02/16 14:34:08 by aherbin           #+#    #+#             */
+/*   Updated: 2024/02/20 16:26:42 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "client.h"
+#include "minitalk_bonus.h"
 
-//static int	ft_send(__pid_t srv_pid, char *str)
-//{
-
-//}
-
-int send_char_to_server(unsigned char c, __pid_t server_pid)
+static void	send_char_to_server(unsigned char c, __pid_t server_pid)
 {
-	unsigned char   bit;
+	unsigned char	bit;
 
 	bit = 0b10000000;
 	while (bit)
@@ -27,44 +22,35 @@ int send_char_to_server(unsigned char c, __pid_t server_pid)
 		if (bit & c)
 		{
 			if (kill(server_pid, SIGUSR1) == -1)
-				return (0);
+				exit (0);
 		}
 		else
 		{
 			if (kill(server_pid, SIGUSR2) == -1)
-				return (0);
+				exit (0);
 		}
+		pause();
 		bit >>= 1;
-		usleep(100);
 	}
-	return (1);
 }
 
-int str_to_c(__pid_t pid, char *str)
+static void	sig_handler(int signum)
+{
+	if (signum == 12)
+		write(1, "confirmation received!\n", 23);
+}
+
+static int	str_to_c(__pid_t pid, char *str)
 {
 	int	i;
 
 	i = 0;
 	while (str[i])
 	{
-		if (send_char_to_server(str[i], pid) == 0 )
-			return (0);
+		send_char_to_server(str[i], pid);
 		++i;
 	}
-	return (1);
-}
-
-int	is_pid(char *spid)
-{
-	int	i;
-
-	i = 0;
-	while (spid[i])
-	{
-		if (!ft_isdigit(spid[i]))
-			return (0);
-		++i;
-	}
+	send_char_to_server(0, pid);
 	return (1);
 }
 
@@ -72,17 +58,11 @@ int	main(int argc, char **argv)
 {
 	__pid_t	pid;
 
-	if (argc != 3 || !is_pid(argv[1]))
+	if (argc != 3 || !is_pid(argv[1]) || !argv[2])
 		return (0);
 	pid = (__pid_t)ft_atoi(argv[1]);
+	signal(10, &sig_handler);
+	signal(12, &sig_handler);
 	if (!str_to_c(pid, argv[2]))
 		return (0);
-	return (ft_printf("message sent!\n"));
-
-
-//	PID =  argv[1]
-//	str_to_send = argv[2]
-//	if (argc != 3)
-//		return (-1);
-//	srv_pid = ft_atoi(argv[1]);
 }

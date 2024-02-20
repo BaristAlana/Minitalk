@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/01/28 17:48:20 by aherbin           #+#    #+#              #
-#    Updated: 2024/02/15 12:04:32 by aherbin          ###   ########.fr        #
+#    Created: 2024/02/16 14:26:54 by aherbin           #+#    #+#              #
+#    Updated: 2024/02/20 16:43:31 by aherbin          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ NAME = Minitalk
 
 CC = cc
 
-CCFLAGS = -Wall -Wextra -Werror
+CCFLAGS = -Wall -Wextra -Werror -g
 
 INCLUDES = -I include/
 
@@ -30,21 +30,25 @@ RED = \033[0;1;31m
 BLUE = \033[0;34m
 ECEND = \033[0m
 
-LIBFT = libft
+SRC_SRV = src/server.c
 
-LIBFT_A = libft.a
-
-SRC_SRV = Server_SRC/server.c
-
-SRC_CLIENT = Client_SRC/client.c
+SRC_CLIENT = src/client.c
 
 CLIENT = client
 
 SERVER = server
 
-SRC_SRV_BONUS = Server_SRC_bonus/server_bonus.c
+SRC_COMMON = src/common.c
 
-SRC_CLIENT_BONUS = Client_SRC_bonus/client_bonus.c
+COMMON = common.o
+
+SRC_SRV_BONUS = src_bonus/server_bonus.c
+
+SRC_CLIENT_BONUS = src_bonus/client_bonus.c
+
+SRC_COMMON_BONUS = src_bonus/common_bonus.c
+
+COMMON_BONUS = common_bonus.o
 
 CLIENT_BONUS = client_bonus
 
@@ -58,38 +62,40 @@ all: $(NAME)
 
 $(NAME): $(CLIENT) $(SERVER)
 
-$(LIBFT_A):
-	@make printf -C $(LIBFT)
-	@cp libft/libft.a .
+$(COMMON): $(SRC_COMMON)
+	@$(CC) $(CCFLAGS) $(INCLUDES) -o $@ -c $<
+	@echo "$(GREEN)$@ $(BLUE)successfully compiled"
 
-$(CLIENT): $(LIBFT_A) $(SRC_CLIENT)
-	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_CLIENT) $(LIBFT_A) -o client
+$(CLIENT): $(SRC_CLIENT) $(COMMON)
+	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_CLIENT) $(COMMON) -o $(CLIENT)
 	@echo "$(CYAN)$(CLIENT) $(BLUE)successfully created!$(ECEND)"
 
-$(SERVER): $(LIBFT_A) $(SRC_SRV)
-	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_SRV) $(LIBFT_A) -o server
+$(SERVER): $(SRC_SRV) $(COMMON)
+	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_SRV) $(COMMON) -o $(SERVER)
 	@echo "$(CYAN)$(SERVER) $(BLUE)successfully created!$(ECEND)"
 
-bonus : $(SERVER_BONUS) $(CLIENT_BONUS)
+bonus: all $(SERVER_BONUS) $(CLIENT_BONUS)
 
-$(CLIENT_BONUS) : $(LIBFT_A) $(SRC_CLIENT_BONUS)
-	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_CLIENT_BONUS) $(LIBFT_A) -o client_bonus
+$(COMMON_BONUS): $(SRC_COMMON_BONUS)
+	@$(CC) $(CCFLAGS) $(INCLUDES) -o $@ -c $<
+	@echo "$(GREEN)$@ $(BLUE)successfully compiled"
+
+$(CLIENT_BONUS) : $(SRC_CLIENT_BONUS) $(COMMON_BONUS)
+	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_CLIENT_BONUS) $(COMMON_BONUS) -o $(CLIENT_BONUS)
 	@echo "$(CYAN)$(CLIENT_BONUS) $(BLUE)successfully created!$(ECEND)"
 
-$(SERVER_BONUS) : $(LIBFT_A) $(SRC_SRV_BONUS)
-	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_SRV_BONUS) $(LIBFT_A) -o server_bonus
+$(SERVER_BONUS) : $(SRC_SRV_BONUS) $(COMMON_BONUS)
+	@$(CC) $(CCFLAGS) $(INCLUDES) $(SRC_SRV_BONUS) $(COMMON_BONUS) -o $(SERVER_BONUS)
 	@echo "$(CYAN)$(SERVER_BONUS) $(BLUE)successfully created!$(ECEND)"
 
 clean:
-	@make clean -C $(LIBFT)
-	@echo "$(RED)OBJS $(BLUE)successfully deleted$(ECEND)"
+	@$(RM)  $(COMMON) $(COMMON_BONUS)
+	@echo "$(RED)common objs deleted $(ECEND)"
 
 fclean: clean
-	@$(RM) $(CLIENT) $(SERVER)
-	@$(RM) libft.a
-	@make fclean -C $(LIBFT)
-	@echo "$(RED)$(NAME) & libft/libft.a $(BLUE)successfully deleted$(ECEND)"
+	@$(RM) $(CLIENT) $(SERVER) $(CLIENT_BONUS) $(SERVER_BONUS)
+	@echo "$(RED)$(NAME) $(BLUE)successfully deleted$(ECEND)"
 
 re: fclean all
 
-.PHONY: all bonus clean fclean re bonus
+.PHONY: all bonus clean fclean re
