@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/26 17:36:14 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/14 17:35:59 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/20 12:28:49 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ void	sig_printf(int signum, siginfo_t *info, void *ucontent)
 	}
 	if (i == 8)
 	{
-		write(1, &bit, 1);
+		if (bit == 0)
+			write(1, "\n", 1);
+		else
+			write(1, &bit, 1);
 		i ^= i;
 		bit ^= bit;
 		kill(info->si_pid, SIGUSR2); //BYTE received, keep sending
