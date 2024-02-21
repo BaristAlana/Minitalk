@@ -1,30 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memchr.c                                        :+:      :+:    :+:   */
+/*   minitalk.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/16 16:42:34 by aherbin           #+#    #+#             */
-/*   Updated: 2023/11/25 14:13:17 by aherbin          ###   ########.fr       */
+/*   Created: 2024/02/16 14:33:49 by aherbin           #+#    #+#             */
+/*   Updated: 2024/02/21 15:53:56 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef MINITALK_H
+# define MINITALK_H
 
-void	*ft_memchr(const void *s, int c, size_t n)
-{
-	size_t			i;
-	unsigned char	*cmp;
+# include <unistd.h>
+# include <signal.h>
+# include <stdlib.h>
 
-	cmp = (unsigned char *)s;
-	i = 0;
-	while (i < n)
-	{
-		if (*cmp == (unsigned char) c)
-			return ((void *) cmp);
-		++i;
-		++cmp;
-	}
-	return (NULL);
-}
+int		ft_atoi(char *str);
+
+int		ft_isdigit(int c);
+
+void	ft_putnbr_fd(int nb, int fd);
+
+void	exit_on_error(char *error_code);
+
+int		is_pid(char *spid);
+
+#endif

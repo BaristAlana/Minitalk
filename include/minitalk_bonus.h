@@ -1,20 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*   minitalk_bonus.h                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/16 15:39:33 by aherbin           #+#    #+#             */
-/*   Updated: 2023/11/25 14:14:54 by aherbin          ###   ########.fr       */
+/*   Created: 2024/02/16 14:33:52 by aherbin           #+#    #+#             */
+/*   Updated: 2024/02/21 15:55:15 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef MINITALK_BONUS_H
+# define MINITALK_BONUS_H
 
-int	ft_tolower(int c)
-{
-	if (c <= 'Z' && c >= 'A')
-		return (c + 32);
-	return (c);
-}
+# include <unistd.h>
+# include <signal.h>
+# include <stdlib.h>
+
+int		ft_atoi(char *str);
+
+int		ft_isdigit(int c);
+
+void	ft_putnbr_fd(int nb, int fd);
+
+void	exit_on_error(char *error_code);
+
+int		is_pid(char *spid);
+
+#endif
