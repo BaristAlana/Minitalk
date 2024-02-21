@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:33:59 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/20 16:21:58 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/21 15:54:06 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,12 +39,14 @@ static void	print_char(char c, int i, int pid)
 	if (i == 0)
 	{
 		if (kill(pid, SIGUSR2) == -1)
-			exit (1);
+			exit_on_error("Could not send a signal\n\
+			Client might've been killed!\n");
 	}
 	if (i == 1)
 	{
 		if (kill(pid, SIGUSR1) == -1)
-			exit (1);
+			exit_on_error("Could not send a signal;\n \
+Client might've been killed!\n");
 	}
 	sig_print(0, NULL, NULL);
 }
@@ -68,7 +70,6 @@ static void	sig_print(int signum, siginfo_t *info, void *ucontent)
 		bit += 1 << (7 - i);
 		++i;
 	}
-	usleep(100);
 	if (i == 8)
 	{
 		if (bit == 0)
@@ -88,9 +89,9 @@ static void	sig_init(void)
 	server_sig.sa_sigaction = &sig_print;
 	server_sig.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &server_sig, NULL) == -1)
-		exit(1);
+		exit_on_error("Couldn't change SIGUSR1 behaviour\n");
 	if (sigaction(SIGUSR2, &server_sig, NULL) == -1)
-		exit(2);
+		exit_on_error("Couldn't change SIGUSR2 behaviour\n");
 }
 
 int	main(void)

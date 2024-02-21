@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:33:49 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/16 16:08:54 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/21 15:53:56 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int		ft_isdigit(int c);
 
 void	ft_putnbr_fd(int nb, int fd);
 
-int		ft_strlen(char *str);
+void	exit_on_error(char *error_code);
 
 int		is_pid(char *spid);
 

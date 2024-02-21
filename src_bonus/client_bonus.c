@@ -6,11 +6,28 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:34:08 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/20 16:26:42 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/21 15:58:43 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk_bonus.h"
+
+static int	g_control = 0;
+
+static void	waitforanswer(void)
+{
+	int	i;
+
+	i = 0;
+	while (g_control == 0)
+	{
+		if (i == 50)
+			exit_on_error("Timeout!\n");
+		usleep(100);
+		++i;
+	}
+	g_control = 0;
+}
 
 static void	send_char_to_server(unsigned char c, __pid_t server_pid)
 {
@@ -22,20 +39,23 @@ static void	send_char_to_server(unsigned char c, __pid_t server_pid)
 		if (bit & c)
 		{
 			if (kill(server_pid, SIGUSR1) == -1)
-				exit (0);
+				exit_on_error("Could not send a signal;\n\
+check server availability or pid validity!");
 		}
 		else
 		{
 			if (kill(server_pid, SIGUSR2) == -1)
-				exit (0);
+				exit_on_error("Could not send a signal;\n\
+check server availability or pid validity!");
 		}
-		pause();
+		waitforanswer();
 		bit >>= 1;
 	}
 }
 
 static void	sig_handler(int signum)
 {
+	g_control = 1;
 	if (signum == 12)
 		write(1, "confirmation received!\n", 23);
 }

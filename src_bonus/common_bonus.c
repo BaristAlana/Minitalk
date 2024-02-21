@@ -6,7 +6,7 @@
 /*   By: aherbin <aherbin@student.42berlin.de>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/16 14:42:01 by aherbin           #+#    #+#             */
-/*   Updated: 2024/02/20 16:28:34 by aherbin          ###   ########.fr       */
+/*   Updated: 2024/02/21 15:55:45 by aherbin          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,14 +76,14 @@ int	is_pid(char *spid)
 	return (1);
 }
 
-int	ft_strlen(char *str)
+void	exit_on_error(char *exit_code)
 {
 	int	i;
 
 	i = 0;
-	if (!str)
-		return (0);
-	while (str[i])
+	while (exit_code[i])
 		++i;
-	return (i);
+	write(1, exit_code, i);
+	write(1, "\n", 1);
+	exit(0);
 }
