@@ -22,6 +22,7 @@ Lauch the server first; You'll get it's PID.
 
 Use said PID as an argument for the client, followed by the message to send:
 
+![Screencast from 04-02-2024 12_08_15 PM (2)](https://github.com/BaristAlana/Minitalk/assets/116071435/820a4713-f047-4c93-9ccc-d33b77684601)
 
 
 The server can receive multiple messages in a row without a restart, as recquired by the subject.
